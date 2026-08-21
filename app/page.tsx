@@ -2,8 +2,8 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Search, Loader2, MapPin, XCircle, CheckCircle, 
-  Sliders, Hotel, Sparkles, AlertCircle, RefreshCw,
+  Search, Loader2, XCircle, 
+  Sliders, Hotel, Sparkles, RefreshCw,
   Clock, Check, ChevronDown, Award, AlertTriangle, ShieldCheck,
   ChevronLeft, ChevronRight, CalendarDays
 } from 'lucide-react';
@@ -70,7 +70,6 @@ export default function Home() {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   
   // Dynamic step logging to show Temporal orchestrating in real time
-  const [activeStep, setActiveStep] = useState<number>(-1);
   const [timelineSteps, setTimelineSteps] = useState<{ 
     label: string; 
     detail?: string;
@@ -97,7 +96,6 @@ export default function Home() {
     setResult(null);
     setAllResults(null);
     setErrorMsg(null);
-    setActiveStep(0);
 
     // Save active search config to render detailed error/timeout cards
     setActiveSearchConfig({ delayA, errorA, emptyA, delayB, errorB, emptyB });
@@ -116,7 +114,6 @@ export default function Home() {
 
     // Step 1: Start Workflow
     await new Promise((resolve) => setTimeout(resolve, 800));
-    setActiveStep(1);
     setTimelineSteps((prev) => {
       const next = [...prev];
       next[0] = { ...next[0], status: 'success' };
@@ -127,8 +124,6 @@ export default function Home() {
     // Step 2: Parallel Fetch
     const fetchDelay = Math.max(delayA, delayB, 1000);
     await new Promise((resolve) => setTimeout(resolve, Math.min(fetchDelay, 1800)));
-    
-    setActiveStep(2);
     setTimelineSteps((prev) => {
       const next = [...prev];
       next[1] = { ...next[1], status: 'success' };
@@ -201,7 +196,6 @@ export default function Home() {
       });
 
       setResult(hotel);
-      setActiveStep(4);
       setTimelineSteps((prev) => {
         const next = [...prev];
         next[3] = { 
@@ -211,12 +205,12 @@ export default function Home() {
         };
         return next;
       });
-    } catch (err: any) {
-      setErrorMsg(err.message || 'An error occurred during execution');
-      setActiveStep(4);
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : 'An error occurred during execution';
+      setErrorMsg(message);
       setTimelineSteps((prev) => {
         const next = [...prev];
-        next[3] = { label: 'Failed', detail: err.message, status: 'failed' };
+        next[3] = { label: 'Failed', detail: message, status: 'failed' };
         return next;
       });
     } finally {

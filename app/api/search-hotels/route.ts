@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getTemporalClient } from '@/temporal/client';
 import { hotelSearchWorkflow } from '@/temporal/workflows';
-import { SearchInput } from '@/temporal/shared';
 
 export async function POST(request: Request) {
   try {
@@ -26,14 +25,18 @@ export async function POST(request: Request) {
     // Wait for the workflow result
     const result = await handle.result();
     return NextResponse.json(result);
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Error executing hotel search workflow:', err);
     
-    // Check if cancellation caused the failure
-    if (err.name === 'WorkflowFailedError' && err.cause?.name === 'CancelledFailure') {
-      return NextResponse.json({ error: 'Search cancelled by user' }, { status: 499 });
+    if (err && typeof err === 'object' && 'name' in err) {
+      const errorObj = err as { name: string; cause?: { name: string } };
+      // Check if cancellation caused the failure
+      if (errorObj.name === 'WorkflowFailedError' && errorObj.cause?.name === 'CancelledFailure') {
+        return NextResponse.json({ error: 'Search cancelled by user' }, { status: 499 });
+      }
     }
 
-    return NextResponse.json({ error: err.message || 'Internal Server Error' }, { status: 500 });
+    const message = err instanceof Error ? err.message : 'Internal Server Error';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

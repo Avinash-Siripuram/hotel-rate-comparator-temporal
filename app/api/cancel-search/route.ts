@@ -17,8 +17,9 @@ export async function POST(request: Request) {
     await handle.cancel();
 
     return NextResponse.json({ success: true, message: 'Search cancellation signal sent' });
-  } catch (err: any) {
+  } catch (err: unknown) {
     console.error('Error cancelling workflow:', err);
-    return NextResponse.json({ error: err.message || 'Failed to cancel search' }, { status: 500 });
+    const message = err instanceof Error ? err.message : 'Failed to cancel search';
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

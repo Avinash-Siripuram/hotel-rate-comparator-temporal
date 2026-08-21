@@ -19,8 +19,8 @@ export async function fetchSupplierA(input: SearchInput): Promise<HotelInfo[]> {
     throw new Error(`Supplier A failed: ${errorText}`);
   }
 
-  const data = await response.json();
-  return data.map((h: any) => ({
+  const data = (await response.json()) as Omit<HotelInfo, 'supplier'>[];
+  return data.map((h) => ({
     ...h,
     supplier: 'SupplierA',
   }));
@@ -43,8 +43,8 @@ export async function fetchSupplierB(input: SearchInput): Promise<HotelInfo[]> {
     throw new Error(`Supplier B failed: ${errorText}`);
   }
 
-  const data = await response.json();
-  return data.map((h: any) => ({
+  const data = (await response.json()) as Omit<HotelInfo, 'supplier'>[];
+  return data.map((h) => ({
     ...h,
     supplier: 'SupplierB',
   }));

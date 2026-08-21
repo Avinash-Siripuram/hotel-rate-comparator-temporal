@@ -104,9 +104,10 @@ describe('Hotel Search Workflow Tests', () => {
     try {
       await runWorkflowWithMocks(defaultInput, mocks);
       expect.fail('Workflow should have thrown an error');
-    } catch (err: any) {
-      expect(err.name).toBe('WorkflowFailedError');
-      expect(err.cause?.message).toBe('Both suppliers failed to respond');
+    } catch (err: unknown) {
+      const errorObj = err as { name: string; cause?: { message: string } };
+      expect(errorObj.name).toBe('WorkflowFailedError');
+      expect(errorObj.cause?.message).toBe('Both suppliers failed to respond');
     }
   });
 
@@ -130,9 +131,10 @@ describe('Hotel Search Workflow Tests', () => {
     try {
       await runWorkflowWithMocks(defaultInput, mocks);
       expect.fail('Workflow should have thrown an error');
-    } catch (err: any) {
-      expect(err.name).toBe('WorkflowFailedError');
-      expect(err.cause?.message).toBe('No hotels found');
+    } catch (err: unknown) {
+      const errorObj = err as { name: string; cause?: { message: string } };
+      expect(errorObj.name).toBe('WorkflowFailedError');
+      expect(errorObj.cause?.message).toBe('No hotels found');
     }
   });
 
