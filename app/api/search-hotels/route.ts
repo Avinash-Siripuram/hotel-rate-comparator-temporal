@@ -29,10 +29,15 @@ export async function POST(request: Request) {
     console.error('Error executing hotel search workflow:', err);
     
     if (err && typeof err === 'object' && 'name' in err) {
-      const errorObj = err as { name: string; cause?: { name: string } };
-      // Check if cancellation caused the failure
-      if (errorObj.name === 'WorkflowFailedError' && errorObj.cause?.name === 'CancelledFailure') {
-        return NextResponse.json({ error: 'Search cancelled by user' }, { status: 499 });
+      const errorObj = err as { name: string; cause?: { name: string; message?: string } };
+      // Check if cancellation or other underlying error caused the failure
+      if (errorObj.name === 'WorkflowFailedError') {
+        if (errorObj.cause?.name === 'CancelledFailure') {
+          return NextResponse.json({ error: 'Search cancelled by user' }, { status: 499 });
+        }
+        if (errorObj.cause?.message) {
+          return NextResponse.json({ error: errorObj.cause.message }, { status: 500 });
+        }
       }
     }
 

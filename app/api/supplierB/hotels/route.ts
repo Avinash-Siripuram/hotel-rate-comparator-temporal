@@ -8,6 +8,11 @@ const HOTELS_B = [
   { hotelId: 'b5', name: 'Park Hyatt Tokyo', price: 420, city: 'Tokyo' },
   { hotelId: 'b6', name: 'The Plaza', price: 520, city: 'New York' },
   { hotelId: 'b7', name: 'Pod 39 Hotel', price: 105, city: 'New York' },
+  { hotelId: 'b8', name: 'The Savoy London', price: 340, city: 'London' },
+  { hotelId: 'b9', name: 'Marina Bay Sands Singapore', price: 460, city: 'Singapore' },
+  { hotelId: 'b10', name: 'Hotel de Russie Rome', price: 310, city: 'Rome' },
+  { hotelId: 'b11', name: 'Burj Al Arab Dubai', price: 880, city: 'Dubai' },
+  { hotelId: 'b12', name: 'Park Hyatt Sydney', price: 395, city: 'Sydney' },
 ];
 
 export async function GET(request: Request) {
