@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { 
   Search, Loader2, MapPin, XCircle, CheckCircle, 
-  Sliders, ArrowRight, Hotel, Sparkles, AlertCircle, RefreshCw,
+  Sliders, Hotel, Sparkles, AlertCircle, RefreshCw,
   Clock, Check, ChevronDown, Award, AlertTriangle, ShieldCheck,
   ChevronLeft, ChevronRight, CalendarDays
 } from 'lucide-react';
@@ -294,78 +294,77 @@ export default function Home() {
   const firstDayIndex = getFirstDayOfMonth(currentMonth, currentYear);
 
   return (
-    <div className="flex-1 flex flex-col justify-start min-h-screen bg-[#070913] text-slate-100 relative overflow-hidden font-sans">
+    <div className="flex-1 flex flex-col justify-start min-h-screen bg-slate-50 text-slate-800 relative overflow-hidden font-sans">
       
-      {/* Background Glow effects */}
-      <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-indigo-500/10 blur-[120px] pointer-events-none"></div>
-      <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-violet-600/10 blur-[120px] pointer-events-none"></div>
+      {/* Background soft color blur blobs */}
+      <div className="absolute top-[-5%] left-[-5%] w-[40%] h-[40%] rounded-full bg-indigo-500/5 blur-[100px] pointer-events-none"></div>
+      <div className="absolute bottom-[-5%] right-[-5%] w-[40%] h-[40%] rounded-full bg-violet-600/5 blur-[100px] pointer-events-none"></div>
 
-      <div className="max-w-5xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 space-y-10 relative z-10">
+      <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 space-y-8 relative z-10">
         
         {/* Navigation / Header */}
-        <div className="flex justify-between items-center border-b border-slate-800/80 pb-6">
+        <div className="flex justify-between items-center border-b border-slate-200/80 pb-5">
           <div className="flex items-center gap-2.5">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center shadow-lg shadow-indigo-500/20">
-              <Hotel className="w-5.5 h-5.5 text-white" />
+            <div className="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center shadow-md shadow-indigo-500/10">
+              <Hotel className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h1 className="text-lg font-bold tracking-tight text-white flex items-center gap-1.5">
-                Tripare <span className="text-xs bg-indigo-500/10 border border-indigo-500/30 text-indigo-400 px-2 py-0.5 rounded-md font-medium">Temporal Engine</span>
+              <h1 className="text-base font-bold tracking-tight text-slate-800 flex items-center gap-1.5">
+                Tripare <span className="text-[10px] bg-indigo-50 text-indigo-600 px-2 py-0.5 rounded-md font-bold border border-indigo-100">Temporal Engine</span>
               </h1>
-              <p className="text-[10px] text-slate-500 font-mono">v1.0.0-beta</p>
             </div>
           </div>
-          <div className="flex items-center gap-4 text-xs">
-            <span className="flex items-center gap-1.5 text-emerald-400 font-medium bg-emerald-500/5 px-2.5 py-1 rounded-full border border-emerald-500/10">
-              <ShieldCheck className="w-3.5 h-3.5" /> Temporal Cloud Active
+          <div className="flex items-center gap-4 text-[11px]">
+            <span className="flex items-center gap-1 text-emerald-600 font-semibold bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-100">
+              <ShieldCheck className="w-3.5 h-3.5" /> Temporal Service Active
             </span>
           </div>
         </div>
 
         {/* Hero Copy */}
-        <div className="text-center max-w-2xl mx-auto space-y-4 pt-4">
-          <div className="inline-flex items-center gap-1.5 bg-indigo-500/10 text-indigo-400 px-3 py-1 rounded-full text-xs font-semibold tracking-wide border border-indigo-500/20">
-            <Sparkles className="w-3.5 h-3.5" /> Next-Generation Orchestration
+        <div className="text-center max-w-xl mx-auto space-y-3 pt-2">
+          <div className="inline-flex items-center gap-1 bg-indigo-50 text-indigo-600 px-2.5 py-0.5 rounded-full text-[10px] font-bold tracking-wide border border-indigo-100">
+            <Sparkles className="w-3 h-3 text-indigo-500" /> Reliable Hotel Booking Orchestrator
           </div>
-          <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tight bg-gradient-to-b from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">
-            Compare Hotel Rates instantly.
+          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900">
+            Compare Hotel Rates Instantly
           </h2>
-          <p className="text-sm sm:text-base text-slate-400">
+          <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
             Orchestrated with Temporal workflows to handle delays, failovers, retries, and cancellation signals dynamically.
           </p>
         </div>
 
-        {/* Beautiful Form Card */}
-        <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
-          <form onSubmit={handleSearch} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative" ref={calendarRef}>
+        {/* Form Card */}
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-xl shadow-slate-100 space-y-5">
+          <form onSubmit={handleSearch} className="space-y-5">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-5 relative" ref={calendarRef}>
               
               {/* Destination Dropdown */}
-              <div className="space-y-2 relative" ref={dropdownRef}>
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <div className="space-y-1.5 relative" ref={dropdownRef}>
+                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
                   Destination
                 </label>
                 <div 
                   onClick={() => !loading && setShowCityDropdown(!showCityDropdown)}
-                  className="w-full bg-slate-950/80 border border-slate-800 hover:border-slate-700 text-white rounded-xl px-4 py-4 text-sm flex items-center justify-between cursor-pointer transition-colors"
+                  className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-800 rounded-xl px-4 py-3.5 text-sm flex items-center justify-between cursor-pointer transition-all"
                 >
                   <div className="flex flex-col text-left">
-                    <span className="font-semibold text-slate-200">{selectedCity.name}</span>
-                    <span className="text-[10px] text-slate-500">{selectedCity.country}</span>
+                    <span className="font-semibold text-slate-800">{selectedCity.name}</span>
+                    <span className="text-[10px] text-slate-400">{selectedCity.country}</span>
                   </div>
-                  <ChevronDown className="w-4 h-4 text-slate-500" />
+                  <ChevronDown className="w-4 h-4 text-slate-400" />
                 </div>
 
                 {showCityDropdown && (
-                  <div className="absolute top-[105%] left-0 w-full bg-slate-950 border border-slate-800 rounded-xl shadow-2xl p-2 z-50 max-h-[300px] overflow-y-auto">
+                  <div className="absolute top-[102%] left-0 w-full bg-white border border-slate-200 rounded-xl shadow-2xl p-2 z-50 max-h-[220px] overflow-y-auto">
                     <input
                       type="text"
                       placeholder="Search destination..."
                       value={citySearch}
                       onChange={(e) => setCitySearch(e.target.value)}
-                      className="w-full bg-slate-900 border border-slate-800 text-white rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 mb-2"
+                      className="w-full bg-slate-50 border border-slate-200 text-slate-800 rounded-lg px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 mb-2"
                     />
-                    <div className="space-y-1">
+                    <div className="space-y-0.5">
                       {filteredCities.map((item) => (
                         <div
                           key={item.name}
@@ -374,13 +373,13 @@ export default function Home() {
                             setCitySearch('');
                             setShowCityDropdown(false);
                           }}
-                          className={`flex justify-between items-center px-3 py-2 rounded-lg text-xs cursor-pointer hover:bg-slate-900 transition-colors ${selectedCity.name === item.name ? 'bg-indigo-500/10 text-indigo-400' : 'text-slate-300'}`}
+                          className={`flex justify-between items-center px-3 py-2 rounded-lg text-xs cursor-pointer hover:bg-slate-50 transition-colors ${selectedCity.name === item.name ? 'bg-indigo-50 text-indigo-600' : 'text-slate-600'}`}
                         >
                           <div className="flex flex-col">
                             <span className="font-bold">{item.name}</span>
-                            <span className="text-[10px] text-slate-500">{item.country}</span>
+                            <span className="text-[10px] text-slate-400">{item.country}</span>
                           </div>
-                          <span className="text-[10px] font-mono text-slate-500 bg-slate-900 px-1.5 py-0.5 rounded">{item.code}</span>
+                          <span className="text-[10px] font-mono text-slate-400 bg-slate-100 px-1.5 py-0.5 rounded">{item.code}</span>
                         </div>
                       ))}
                     </div>
@@ -388,52 +387,52 @@ export default function Home() {
                 )}
               </div>
 
-              {/* Polished Check-In Calendar Input */}
-              <div className="space-y-2 relative">
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              {/* Check-In Input */}
+              <div className="space-y-1.5 relative">
+                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
                   Check-in
                 </label>
                 <div 
                   onClick={() => !loading && setActivePicker(activePicker === 'in' ? null : 'in')}
-                  className="w-full bg-slate-950/80 border border-slate-800 hover:border-slate-700 text-white rounded-xl px-4 py-4 text-sm flex items-center justify-between cursor-pointer transition-colors"
+                  className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-850 rounded-xl px-4 py-[18px] text-sm flex items-center justify-between cursor-pointer transition-all"
                 >
-                  <span className="font-semibold text-slate-200">{formatDateDisplay(checkInDate)}</span>
-                  <CalendarDays className="w-4 h-4 text-indigo-400" />
+                  <span className="font-semibold text-slate-800">{formatDateDisplay(checkInDate)}</span>
+                  <CalendarDays className="w-4 h-4 text-indigo-500" />
                 </div>
               </div>
 
-              {/* Polished Check-Out Calendar Input */}
-              <div className="space-y-2 relative">
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              {/* Check-Out Input */}
+              <div className="space-y-1.5 relative">
+                <label className="text-[11px] font-bold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
                   Check-out
                 </label>
                 <div 
                   onClick={() => !loading && setActivePicker(activePicker === 'out' ? null : 'out')}
-                  className="w-full bg-slate-950/80 border border-slate-800 hover:border-slate-700 text-white rounded-xl px-4 py-4 text-sm flex items-center justify-between cursor-pointer transition-colors"
+                  className="w-full bg-slate-50 border border-slate-200 hover:border-slate-300 text-slate-850 rounded-xl px-4 py-[18px] text-sm flex items-center justify-between cursor-pointer transition-all"
                 >
-                  <span className="font-semibold text-slate-200">{formatDateDisplay(checkOutDate)}</span>
-                  <CalendarDays className="w-4 h-4 text-indigo-400" />
+                  <span className="font-semibold text-slate-800">{formatDateDisplay(checkOutDate)}</span>
+                  <CalendarDays className="w-4 h-4 text-indigo-500" />
                 </div>
               </div>
 
               {/* Premium Custom Calendar Dropdown Card */}
               {activePicker && (
-                <div className={`absolute top-[102%] w-[320px] bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl p-4 z-50 transition-all ${
-                  activePicker === 'in' ? 'left-[33%]' : 'left-[66%]'
+                <div className={`absolute top-[102%] w-[300px] bg-white border border-slate-200 rounded-2xl shadow-2xl p-4 z-50 transition-all ${
+                  activePicker === 'in' ? 'left-[33%]' : 'left-[65%]'
                 }`}>
                   {/* Calendar Header */}
                   <div className="flex justify-between items-center mb-3">
-                    <button type="button" onClick={prevMonth} className="p-1 hover:bg-slate-900 rounded text-slate-400">
+                    <button type="button" onClick={prevMonth} className="p-1 hover:bg-slate-100 rounded text-slate-500">
                       <ChevronLeft className="w-4 h-4" />
                     </button>
-                    <span className="text-xs font-bold text-slate-200">{monthNames[currentMonth]} {currentYear}</span>
-                    <button type="button" onClick={nextMonth} className="p-1 hover:bg-slate-900 rounded text-slate-400">
+                    <span className="text-xs font-bold text-slate-800">{monthNames[currentMonth]} {currentYear}</span>
+                    <button type="button" onClick={nextMonth} className="p-1 hover:bg-slate-100 rounded text-slate-500">
                       <ChevronRight className="w-4 h-4" />
                     </button>
                   </div>
 
                   {/* Day Names */}
-                  <div className="grid grid-cols-7 gap-1 text-center text-[10px] text-slate-500 font-bold mb-2">
+                  <div className="grid grid-cols-7 gap-1 text-center text-[10px] text-slate-400 font-bold mb-2">
                     <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
                   </div>
 
@@ -470,9 +469,9 @@ export default function Home() {
                           onClick={() => handleDateSelect(dayNum)}
                           className={`py-1.5 rounded-lg text-[11px] font-semibold transition-all ${
                             isSelected ? 'bg-indigo-600 text-white font-bold' :
-                            isToday ? 'border border-indigo-500/40 text-indigo-400' :
-                            isDisabled ? 'text-slate-700 cursor-not-allowed' :
-                            'text-slate-300 hover:bg-slate-900'
+                            isToday ? 'border border-indigo-200 text-indigo-600 bg-indigo-50/20' :
+                            isDisabled ? 'text-slate-200 cursor-not-allowed' :
+                            'text-slate-600 hover:bg-slate-100'
                           }`}
                         >
                           {dayNum}
@@ -486,11 +485,11 @@ export default function Home() {
             </div>
 
             {/* Toggle Configuration Controls */}
-            <div className="pt-2 border-t border-slate-800/40">
+            <div className="pt-2 border-t border-slate-200/80">
               <button
                 type="button"
                 onClick={() => setShowConfig(!showConfig)}
-                className="inline-flex items-center gap-2 text-xs font-semibold text-indigo-400 hover:text-indigo-300 transition-colors"
+                className="inline-flex items-center gap-2 text-xs font-semibold text-indigo-600 hover:text-indigo-700 transition-colors"
               >
                 <Sliders className="w-3.5 h-3.5" />
                 {showConfig ? 'Hide Supplier Simulation Config' : 'Show Supplier Simulation Config'}
@@ -499,20 +498,20 @@ export default function Home() {
 
             {/* Simulation Controls Dashboard */}
             {showConfig && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-950/40 border border-slate-800/60 rounded-2xl p-5 transition-all">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 border border-slate-200 rounded-xl p-4 transition-all">
                 
                 {/* Supplier A Simulation */}
-                <div className="space-y-4">
-                  <h3 className="text-xs font-bold text-slate-300 uppercase tracking-widest border-b border-slate-800/60 pb-2 flex justify-between">
+                <div className="space-y-3">
+                  <h3 className="text-xs font-bold text-slate-700 uppercase tracking-widest border-b border-slate-200 pb-2 flex justify-between">
                     <span>Supplier A (Mock)</span>
-                    <span className="text-[10px] text-indigo-400 font-mono">/supplierA/hotels</span>
+                    <span className="text-[10px] text-slate-400 font-mono">/supplierA/hotels</span>
                   </h3>
                   
                   <div className="space-y-3">
                     <div className="space-y-1">
-                      <label className="text-xs text-slate-400 flex justify-between">
+                      <label className="text-xs text-slate-500 flex justify-between">
                         <span>Latency / Delay:</span>
-                        <span className="text-indigo-400 font-semibold">{delayA} ms</span>
+                        <span className="text-indigo-600 font-bold">{delayA} ms</span>
                       </label>
                       <input
                         type="range"
@@ -522,46 +521,46 @@ export default function Home() {
                         value={delayA}
                         disabled={loading}
                         onChange={(e) => setDelayA(parseInt(e.target.value))}
-                        className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                        className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-500"
                       />
                     </div>
                     <div className="flex flex-wrap gap-4 pt-1">
-                      <label className="flex items-center gap-2 text-xs text-slate-400 cursor-pointer select-none">
+                      <label className="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
                         <input
                           type="checkbox"
                           checked={errorA}
                           disabled={loading}
                           onChange={(e) => setErrorA(e.target.checked)}
-                          className="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0"
+                          className="rounded border-slate-300 text-indigo-600 focus:ring-0"
                         />
-                        Simulate Server Error (500)
+                        Server Error (500)
                       </label>
-                      <label className="flex items-center gap-2 text-xs text-slate-400 cursor-pointer select-none">
+                      <label className="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
                         <input
                           type="checkbox"
                           checked={emptyA}
                           disabled={loading}
                           onChange={(e) => setEmptyA(e.target.checked)}
-                          className="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0"
+                          className="rounded border-slate-300 text-indigo-600 focus:ring-0"
                         />
-                        Empty Response ([])
+                        Empty Response
                       </label>
                     </div>
                   </div>
                 </div>
 
                 {/* Supplier B Simulation */}
-                <div className="space-y-4">
-                  <h3 className="text-xs font-bold text-slate-300 uppercase tracking-widest border-b border-slate-800/60 pb-2 flex justify-between">
+                <div className="space-y-3">
+                  <h3 className="text-xs font-bold text-slate-700 uppercase tracking-widest border-b border-slate-200 pb-2 flex justify-between">
                     <span>Supplier B (Mock)</span>
-                    <span className="text-[10px] text-indigo-400 font-mono">/supplierB/hotels</span>
+                    <span className="text-[10px] text-slate-400 font-mono">/supplierB/hotels</span>
                   </h3>
                   
                   <div className="space-y-3">
                     <div className="space-y-1">
-                      <label className="text-xs text-slate-400 flex justify-between">
+                      <label className="text-xs text-slate-500 flex justify-between">
                         <span>Latency / Delay:</span>
-                        <span className="text-indigo-400 font-semibold">{delayB} ms</span>
+                        <span className="text-indigo-600 font-bold">{delayB} ms</span>
                       </label>
                       <input
                         type="range"
@@ -571,29 +570,29 @@ export default function Home() {
                         value={delayB}
                         disabled={loading}
                         onChange={(e) => setDelayB(parseInt(e.target.value))}
-                        className="w-full h-1 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-indigo-500"
+                        className="w-full h-1 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-indigo-500"
                       />
                     </div>
                     <div className="flex flex-wrap gap-4 pt-1">
-                      <label className="flex items-center gap-2 text-xs text-slate-400 cursor-pointer select-none">
+                      <label className="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
                         <input
                           type="checkbox"
                           checked={errorB}
                           disabled={loading}
                           onChange={(e) => setErrorB(e.target.checked)}
-                          className="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0"
+                          className="rounded border-slate-300 text-indigo-600 focus:ring-0"
                         />
-                        Simulate Server Error (500)
+                        Server Error (500)
                       </label>
-                      <label className="flex items-center gap-2 text-xs text-slate-400 cursor-pointer select-none">
+                      <label className="flex items-center gap-2 text-xs text-slate-600 cursor-pointer select-none">
                         <input
                           type="checkbox"
                           checked={emptyB}
                           disabled={loading}
                           onChange={(e) => setEmptyB(e.target.checked)}
-                          className="rounded border-slate-800 bg-slate-950 text-indigo-600 focus:ring-0"
+                          className="rounded border-slate-300 text-indigo-600 focus:ring-0"
                         />
-                        Empty Response ([])
+                        Empty Response
                       </label>
                     </div>
                   </div>
@@ -607,7 +606,7 @@ export default function Home() {
               <button
                 type="submit"
                 disabled={loading}
-                className="flex-1 bg-gradient-to-r from-indigo-600 via-indigo-700 to-violet-600 hover:from-indigo-500 hover:to-violet-500 text-white rounded-xl py-3.5 px-4 font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-lg shadow-indigo-500/20 disabled:opacity-50"
+                className="flex-1 bg-gradient-to-r from-indigo-600 to-indigo-700 hover:from-indigo-500 hover:to-indigo-600 text-white rounded-xl py-3.5 px-4 font-semibold text-sm flex items-center justify-center gap-2 transition-all shadow-md shadow-indigo-500/10 disabled:opacity-50"
               >
                 {loading ? (
                   <>
@@ -624,7 +623,7 @@ export default function Home() {
                 <button
                   type="button"
                   onClick={handleCancel}
-                  className="bg-rose-500/10 border border-rose-500/20 text-rose-400 hover:bg-rose-500/20 px-5 rounded-xl text-sm font-semibold transition-colors flex items-center gap-1.5"
+                  className="bg-rose-50 hover:bg-rose-100/80 text-rose-600 border border-rose-200 px-5 rounded-xl text-sm font-semibold transition-colors flex items-center gap-1.5 shadow-sm"
                 >
                   <XCircle className="w-4.5 h-4.5" /> Cancel Signal
                 </button>
@@ -635,13 +634,13 @@ export default function Home() {
 
         {/* Polished Temporal Flowchart Diagram */}
         {timelineSteps.length > 0 && (
-          <div className="bg-slate-900/40 border border-slate-800/80 rounded-3xl p-6 sm:p-8 shadow-xl space-y-6">
-            <div className="flex justify-between items-center border-b border-slate-800/60 pb-4">
-              <h2 className="text-xs font-bold text-slate-300 uppercase tracking-widest flex items-center gap-2">
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-lg space-y-5">
+            <div className="flex justify-between items-center border-b border-slate-200/60 pb-3">
+              <h2 className="text-xs font-bold text-slate-700 uppercase tracking-widest flex items-center gap-2">
                 <span className="w-2.5 h-2.5 rounded-full bg-indigo-500 animate-pulse"></span>
                 Temporal Workflow Orchestration Graph
               </h2>
-              <span className="text-[10px] text-slate-500 font-mono">Type: Sequential Task-Queue execution</span>
+              <span className="text-[10px] text-slate-400 font-mono">Type: Sequential Task-Queue execution</span>
             </div>
             
             {/* Horizontal Timeline Graph */}
@@ -652,26 +651,26 @@ export default function Home() {
                 const isFailed = step.status === 'failed';
 
                 return (
-                  <div key={idx} className="flex flex-col items-center text-center space-y-3 relative z-10 group">
+                  <div key={idx} className="flex flex-col items-center text-center space-y-2 relative z-10">
                     {/* Circle Node */}
-                    <div className={`w-12 h-12 rounded-2xl flex items-center justify-center border transition-all ${
-                      isActive ? 'bg-indigo-600/20 border-indigo-400 shadow-lg shadow-indigo-500/20 scale-105' :
-                      isSuccess ? 'bg-emerald-500/10 border-emerald-500 text-emerald-400' :
-                      isFailed ? 'bg-rose-500/10 border-rose-500 text-rose-400 animate-shake' :
-                      'bg-slate-950 border-slate-800 text-slate-500'
+                    <div className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all ${
+                      isActive ? 'bg-indigo-50 border-indigo-500 text-indigo-600 shadow-md shadow-indigo-500/10 scale-105' :
+                      isSuccess ? 'bg-emerald-50 border-emerald-500 text-emerald-600' :
+                      isFailed ? 'bg-rose-50 border-rose-500 text-rose-600' :
+                      'bg-slate-50 border-slate-200 text-slate-400'
                     }`}>
-                      {isSuccess ? <Check className="w-5 h-5" /> : 
-                       isFailed ? <AlertTriangle className="w-5 h-5" /> : 
-                       isActive ? <RefreshCw className="w-5 h-5 animate-spin text-indigo-400" /> : 
-                       <Clock className="w-5 h-5" />}
+                      {isSuccess ? <Check className="w-4.5 h-4.5" /> : 
+                       isFailed ? <AlertTriangle className="w-4.5 h-4.5" /> : 
+                       isActive ? <RefreshCw className="w-4.5 h-4.5 animate-spin text-indigo-500" /> : 
+                       <Clock className="w-4.5 h-4.5" />}
                     </div>
 
-                    <div className="space-y-1">
-                      <h3 className={`text-xs font-bold ${isActive ? 'text-indigo-400' : isSuccess ? 'text-emerald-400' : isFailed ? 'text-rose-400' : 'text-slate-500'}`}>
+                    <div className="space-y-0.5">
+                      <h3 className={`text-xs font-bold ${isActive ? 'text-indigo-600' : isSuccess ? 'text-emerald-600' : isFailed ? 'text-rose-600' : 'text-slate-400'}`}>
                         {step.label}
                       </h3>
                       {step.detail && (
-                        <p className="text-[10px] text-slate-400 font-medium max-w-[180px] mx-auto leading-relaxed">
+                        <p className="text-[10px] text-slate-500 font-medium max-w-[180px] mx-auto leading-relaxed">
                           {step.detail}
                         </p>
                       )}
@@ -685,66 +684,66 @@ export default function Home() {
 
         {/* Results Analysis Panel */}
         {(result || errorMsg) && (
-          <div className="space-y-6">
+          <div className="space-y-5">
             
             {/* Compare Results Side-by-Side if success */}
             {result && allResults && (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 
                 {/* Supplier A Quote Card */}
-                <div className={`border rounded-3xl p-6 bg-slate-950/40 relative overflow-hidden ${
-                  result.supplier === 'SupplierA' ? 'border-emerald-500/30 ring-1 ring-emerald-500/15' : 'border-slate-800'
+                <div className={`border rounded-2xl p-5 bg-white relative overflow-hidden shadow-sm ${
+                  result.supplier === 'SupplierA' ? 'border-emerald-500/50 bg-emerald-500/5 ring-1 ring-emerald-500/10' : 'border-slate-200'
                 }`}>
-                  <div className="flex justify-between items-start mb-4">
-                    <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest bg-indigo-500/5 px-2 py-0.5 rounded border border-indigo-500/10">Supplier A</span>
+                  <div className="flex justify-between items-start mb-3">
+                    <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">Supplier A</span>
                     {result.supplier === 'SupplierA' && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
                         <Award className="w-3.5 h-3.5" /> Best Deal
                       </span>
                     )}
                   </div>
                   
                   {allResults.supplierA.length > 0 ? (
-                    <div className="space-y-4">
-                      <h3 className="text-base font-bold text-white">{allResults.supplierA[0].name}</h3>
-                      <div className="flex justify-between items-baseline pt-2">
-                        <span className="text-xs text-slate-500">Price Quote</span>
-                        <span className="text-2xl font-extrabold text-white">${allResults.supplierA[0].price}<span className="text-xs font-normal text-slate-400">/night</span></span>
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-bold text-slate-800">{allResults.supplierA[0].name}</h3>
+                      <div className="flex justify-between items-baseline pt-1">
+                        <span className="text-xs text-slate-400">Price Quote</span>
+                        <span className="text-xl font-extrabold text-slate-800">${allResults.supplierA[0].price}<span className="text-[10px] font-normal text-slate-500">/night</span></span>
                       </div>
                     </div>
                   ) : (
-                    <div className="py-4 flex flex-col items-center justify-center text-center text-slate-500 gap-1.5">
-                      <AlertCircle className="w-5 h-5 text-rose-500" />
-                      <span className="text-xs">No result received (Delay/Error/Empty)</span>
+                    <div className="py-2 flex flex-col items-center justify-center text-center text-slate-400 gap-1">
+                      <AlertCircle className="w-4 h-4 text-rose-500" />
+                      <span className="text-[11px]">No rate received</span>
                     </div>
                   )}
                 </div>
 
                 {/* Supplier B Quote Card */}
-                <div className={`border rounded-3xl p-6 bg-slate-950/40 relative overflow-hidden ${
-                  result.supplier === 'SupplierB' ? 'border-emerald-500/30 ring-1 ring-emerald-500/15' : 'border-slate-800'
+                <div className={`border rounded-2xl p-5 bg-white relative overflow-hidden shadow-sm ${
+                  result.supplier === 'SupplierB' ? 'border-emerald-500/50 bg-emerald-500/5 ring-1 ring-emerald-500/10' : 'border-slate-200'
                 }`}>
-                  <div className="flex justify-between items-start mb-4">
-                    <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-widest bg-indigo-500/5 px-2 py-0.5 rounded border border-indigo-500/10">Supplier B</span>
+                  <div className="flex justify-between items-start mb-3">
+                    <span className="text-[10px] font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50 px-2 py-0.5 rounded border border-indigo-100">Supplier B</span>
                     {result.supplier === 'SupplierB' && (
-                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-400 bg-emerald-500/10 px-2 py-0.5 rounded-full border border-emerald-500/20">
+                      <span className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-100">
                         <Award className="w-3.5 h-3.5" /> Best Deal
                       </span>
                     )}
                   </div>
                   
                   {allResults.supplierB.length > 0 ? (
-                    <div className="space-y-4">
-                      <h3 className="text-base font-bold text-white">{allResults.supplierB[0].name}</h3>
-                      <div className="flex justify-between items-baseline pt-2">
-                        <span className="text-xs text-slate-500">Price Quote</span>
-                        <span className="text-2xl font-extrabold text-white">${allResults.supplierB[0].price}<span className="text-xs font-normal text-slate-400">/night</span></span>
+                    <div className="space-y-3">
+                      <h3 className="text-sm font-bold text-slate-800">{allResults.supplierB[0].name}</h3>
+                      <div className="flex justify-between items-baseline pt-1">
+                        <span className="text-xs text-slate-400">Price Quote</span>
+                        <span className="text-xl font-extrabold text-slate-800">${allResults.supplierB[0].price}<span className="text-[10px] font-normal text-slate-500">/night</span></span>
                       </div>
                     </div>
                   ) : (
-                    <div className="py-4 flex flex-col items-center justify-center text-center text-slate-500 gap-1.5">
-                      <AlertCircle className="w-5 h-5 text-rose-500" />
-                      <span className="text-xs">No result received (Delay/Error/Empty)</span>
+                    <div className="py-2 flex flex-col items-center justify-center text-center text-slate-400 gap-1">
+                      <AlertCircle className="w-4 h-4 text-rose-500" />
+                      <span className="text-[11px]">No rate received</span>
                     </div>
                   )}
                 </div>
@@ -754,11 +753,11 @@ export default function Home() {
 
             {/* Error Message Panel */}
             {errorMsg && (
-              <div className="bg-rose-500/5 border border-rose-500/20 rounded-3xl p-6 shadow-xl flex gap-4 items-start">
-                <XCircle className="w-6 h-6 text-rose-400 flex-shrink-0 mt-0.5" />
-                <div className="space-y-1">
-                  <h3 className="text-rose-400 font-bold text-base">Execution Fault / Search Error</h3>
-                  <p className="text-slate-400 text-sm">{errorMsg}</p>
+              <div className="bg-rose-50 border border-rose-200 rounded-2xl p-5 shadow-md flex gap-4 items-start">
+                <XCircle className="w-5.5 h-5.5 text-rose-500 flex-shrink-0 mt-0.5" />
+                <div className="space-y-0.5">
+                  <h3 className="text-rose-600 font-bold text-sm">Execution Fault / Search Error</h3>
+                  <p className="text-slate-500 text-xs">{errorMsg}</p>
                 </div>
               </div>
             )}
