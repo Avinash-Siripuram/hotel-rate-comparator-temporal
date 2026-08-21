@@ -148,7 +148,6 @@ export default function Home() {
       policyMsg = 'Supplier B failed. Failover routing successful.';
     }
 
-    setActiveStep(3);
     setTimelineSteps((prev) => {
       const next = [...prev];
       next[2] = { ...next[2], detail: policyMsg, status: policyStatus };
