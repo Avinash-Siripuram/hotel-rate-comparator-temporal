@@ -1,0 +1,12 @@
+node_modules
+.next
+.git
+out
+build
+Dockerfile
+Dockerfile.worker
+docker-compose.yml
+.agents
+.gemini
+tests
+*.log
