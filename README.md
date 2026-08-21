@@ -84,3 +84,12 @@ To run the test suite:
 ```bash
 npm run test
 ```
+
+---
+
+## 📝 Assumptions and Limitations
+
+*   **Currency & Formats**: It is assumed that all supplier rate values are returned in USD and utilize the exact same currency scheme.
+*   **Decoupled Mock Endpoints**: For simplicity of setup, the mock supplier endpoints `/supplierA/hotels` and `/supplierB/hotels` are served from the same Next.js router. In production, these would be external networks, but our simulated latency and error properties emulate external network conditions.
+*   **Static Task Queue**: The development worker listens to a static task queue named `hotel-search-tasks`. In our Vitest test environment, dynamic task queues are generated per test to ensure isolation during parallel test execution.
+
