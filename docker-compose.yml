@@ -32,12 +32,6 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    healthcheck:
-      test: ["CMD", "temporal", "operator", "namespace", "list"]
-      interval: 10s
-      timeout: 5s
-      retries: 10
-
   temporal-ui:
     image: temporalio/ui:2.21.3
     container_name: temporal-ui
@@ -59,8 +53,7 @@ services:
       - TEMPORAL_ADDRESS=temporal:7233
       - BACKEND_URL=http://next-app:3000
     depends_on:
-      temporal:
-        condition: service_healthy
+      - temporal
 
   temporal-worker:
     build:
@@ -71,10 +64,8 @@ services:
       - TEMPORAL_ADDRESS=temporal:7233
       - BACKEND_URL=http://next-app:3000
     depends_on:
-      temporal:
-        condition: service_healthy
-      next-app:
-        condition: service_started
+      - temporal
+      - next-app
 
 volumes:
   postgres_data:
