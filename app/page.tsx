@@ -2,9 +2,10 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { 
-  Search, Loader2, Calendar, MapPin, XCircle, CheckCircle, 
+  Search, Loader2, MapPin, XCircle, CheckCircle, 
   Sliders, ArrowRight, Hotel, Sparkles, AlertCircle, RefreshCw,
-  Clock, Check, ChevronDown, Award, AlertTriangle, ShieldCheck
+  Clock, Check, ChevronDown, Award, AlertTriangle, ShieldCheck,
+  ChevronLeft, ChevronRight, CalendarDays
 } from 'lucide-react';
 import { HotelInfo } from '@/temporal/shared';
 
@@ -26,20 +27,24 @@ export default function Home() {
   const [citySearch, setCitySearch] = useState('');
   const [showCityDropdown, setShowCityDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const checkInRef = useRef<HTMLInputElement>(null);
-  const checkOutRef = useRef<HTMLInputElement>(null);
 
-  // Date selection states
-  const [checkIn, setCheckIn] = useState(() => {
+  // Date states (stored as Date objects)
+  const [checkInDate, setCheckInDate] = useState(() => {
     const d = new Date();
     d.setDate(d.getDate() + 1);
-    return d.toISOString().split('T')[0];
+    return d;
   });
-  const [checkOut, setCheckOut] = useState(() => {
+  const [checkOutDate, setCheckOutDate] = useState(() => {
     const d = new Date();
     d.setDate(d.getDate() + 3);
-    return d.toISOString().split('T')[0];
+    return d;
   });
+
+  // Custom Calendar Dropdown State
+  const [activePicker, setActivePicker] = useState<'in' | 'out' | null>(null);
+  const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+  const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const calendarRef = useRef<HTMLDivElement>(null);
 
   // Simulation controls
   const [showConfig, setShowConfig] = useState(false);
@@ -66,11 +71,14 @@ export default function Home() {
     status: 'pending' | 'active' | 'success' | 'failed';
   }[]>([]);
 
-  // Close dropdown on click outside
+  // Close dropdowns on click outside
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setShowCityDropdown(false);
+      }
+      if (calendarRef.current && !calendarRef.current.contains(event.target as Node)) {
+        setActivePicker(null);
       }
     }
     document.addEventListener('mousedown', handleClickOutside);
@@ -145,13 +153,16 @@ export default function Home() {
     });
 
     try {
+      const checkInStr = checkInDate.toISOString().split('T')[0];
+      const checkOutStr = checkOutDate.toISOString().split('T')[0];
+
       const res = await fetch('/api/search-hotels', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           city: selectedCity.name,
-          checkIn,
-          checkOut,
+          checkIn: checkInStr,
+          checkOut: checkOutStr,
           workflowId: wId,
           options: {
             supplierA: { delay: delayA, error: errorA, empty: emptyA },
@@ -234,11 +245,53 @@ export default function Home() {
   );
 
   // Date Formatting Helper
-  const formatDateDisplay = (dateString: string) => {
-    if (!dateString) return '';
-    const date = new Date(dateString);
+  const formatDateDisplay = (date: Date) => {
     return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
   };
+
+  // Custom Calendar Generator
+  const getDaysInMonth = (month: number, year: number) => new Date(year, month + 1, 0).getDate();
+  const getFirstDayOfMonth = (month: number, year: number) => new Date(year, month, 1).getDay();
+
+  const handleDateSelect = (day: number) => {
+    const selected = new Date(currentYear, currentMonth, day);
+    if (activePicker === 'in') {
+      setCheckInDate(selected);
+      // Automatically adjust check-out if check-in is set after it
+      if (selected >= checkOutDate) {
+        const newOut = new Date(selected);
+        newOut.setDate(newOut.getDate() + 2);
+        setCheckOutDate(newOut);
+      }
+    } else if (activePicker === 'out') {
+      if (selected > checkInDate) {
+        setCheckOutDate(selected);
+      }
+    }
+    setActivePicker(null);
+  };
+
+  const nextMonth = () => {
+    if (currentMonth === 11) {
+      setCurrentMonth(0);
+      setCurrentYear(currentYear + 1);
+    } else {
+      setCurrentMonth(currentMonth + 1);
+    }
+  };
+
+  const prevMonth = () => {
+    if (currentMonth === 0) {
+      setCurrentMonth(11);
+      setCurrentYear(currentYear - 1);
+    } else {
+      setCurrentMonth(currentMonth - 1);
+    }
+  };
+
+  const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+  const daysInMonth = getDaysInMonth(currentMonth, currentYear);
+  const firstDayIndex = getFirstDayOfMonth(currentMonth, currentYear);
 
   return (
     <div className="flex-1 flex flex-col justify-start min-h-screen bg-[#070913] text-slate-100 relative overflow-hidden font-sans">
@@ -285,16 +338,16 @@ export default function Home() {
         {/* Beautiful Form Card */}
         <div className="bg-slate-900/60 backdrop-blur-xl border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
           <form onSubmit={handleSearch} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative" ref={calendarRef}>
               
               {/* Destination Dropdown */}
               <div className="space-y-2 relative" ref={dropdownRef}>
                 <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
-                  <MapPin className="w-3.5 h-3.5 text-indigo-500" /> Destination City
+                  Destination
                 </label>
                 <div 
                   onClick={() => !loading && setShowCityDropdown(!showCityDropdown)}
-                  className="w-full bg-slate-950/80 border border-slate-800 hover:border-slate-700 text-white rounded-xl px-4 py-3.5 text-sm flex items-center justify-between cursor-pointer transition-colors"
+                  className="w-full bg-slate-950/80 border border-slate-800 hover:border-slate-700 text-white rounded-xl px-4 py-4 text-sm flex items-center justify-between cursor-pointer transition-colors"
                 >
                   <div className="flex flex-col text-left">
                     <span className="font-semibold text-slate-200">{selectedCity.name}</span>
@@ -336,50 +389,99 @@ export default function Home() {
               </div>
 
               {/* Polished Check-In Calendar Input */}
-              <div 
-                className="space-y-2 relative cursor-pointer group"
-                onClick={() => !loading && checkInRef.current?.showPicker()}
-              >
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 pointer-events-none">
-                  <Calendar className="w-3.5 h-3.5 text-indigo-500" /> Check-in
+              <div className="space-y-2 relative">
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                  Check-in
                 </label>
-                <div className="relative">
-                  <input
-                    type="date"
-                    ref={checkInRef}
-                    value={checkIn}
-                    onChange={(e) => setCheckIn(e.target.value)}
-                    disabled={loading}
-                    className="w-full bg-slate-950/80 border border-slate-800 group-hover:border-slate-700 text-white rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-indigo-500 transition-all font-semibold cursor-pointer"
-                  />
-                  <div className="absolute right-3 top-3.5 pointer-events-none text-xs text-indigo-400 font-bold bg-slate-900 px-2 py-0.5 rounded flex items-center gap-1.5 border border-slate-800">
-                    <Calendar className="w-3 h-3 text-indigo-400" /> {formatDateDisplay(checkIn)}
-                  </div>
+                <div 
+                  onClick={() => !loading && setActivePicker(activePicker === 'in' ? null : 'in')}
+                  className="w-full bg-slate-950/80 border border-slate-800 hover:border-slate-700 text-white rounded-xl px-4 py-4 text-sm flex items-center justify-between cursor-pointer transition-colors"
+                >
+                  <span className="font-semibold text-slate-200">{formatDateDisplay(checkInDate)}</span>
+                  <CalendarDays className="w-4 h-4 text-indigo-400" />
                 </div>
               </div>
 
               {/* Polished Check-Out Calendar Input */}
-              <div 
-                className="space-y-2 relative cursor-pointer group"
-                onClick={() => !loading && checkOutRef.current?.showPicker()}
-              >
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 pointer-events-none">
-                  <Calendar className="w-3.5 h-3.5 text-indigo-500" /> Check-out
+              <div className="space-y-2 relative">
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+                  Check-out
                 </label>
-                <div className="relative">
-                  <input
-                    type="date"
-                    ref={checkOutRef}
-                    value={checkOut}
-                    onChange={(e) => setCheckOut(e.target.value)}
-                    disabled={loading}
-                    className="w-full bg-slate-950/80 border border-slate-800 group-hover:border-slate-700 text-white rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-indigo-500 transition-all font-semibold cursor-pointer"
-                  />
-                  <div className="absolute right-3 top-3.5 pointer-events-none text-xs text-indigo-400 font-bold bg-slate-900 px-2 py-0.5 rounded flex items-center gap-1.5 border border-slate-800">
-                    <Calendar className="w-3 h-3 text-indigo-400" /> {formatDateDisplay(checkOut)}
-                  </div>
+                <div 
+                  onClick={() => !loading && setActivePicker(activePicker === 'out' ? null : 'out')}
+                  className="w-full bg-slate-950/80 border border-slate-800 hover:border-slate-700 text-white rounded-xl px-4 py-4 text-sm flex items-center justify-between cursor-pointer transition-colors"
+                >
+                  <span className="font-semibold text-slate-200">{formatDateDisplay(checkOutDate)}</span>
+                  <CalendarDays className="w-4 h-4 text-indigo-400" />
                 </div>
               </div>
+
+              {/* Premium Custom Calendar Dropdown Card */}
+              {activePicker && (
+                <div className={`absolute top-[102%] w-[320px] bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl p-4 z-50 transition-all ${
+                  activePicker === 'in' ? 'left-[33%]' : 'left-[66%]'
+                }`}>
+                  {/* Calendar Header */}
+                  <div className="flex justify-between items-center mb-3">
+                    <button type="button" onClick={prevMonth} className="p-1 hover:bg-slate-900 rounded text-slate-400">
+                      <ChevronLeft className="w-4 h-4" />
+                    </button>
+                    <span className="text-xs font-bold text-slate-200">{monthNames[currentMonth]} {currentYear}</span>
+                    <button type="button" onClick={nextMonth} className="p-1 hover:bg-slate-900 rounded text-slate-400">
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
+                  </div>
+
+                  {/* Day Names */}
+                  <div className="grid grid-cols-7 gap-1 text-center text-[10px] text-slate-500 font-bold mb-2">
+                    <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+                  </div>
+
+                  {/* Days Grid */}
+                  <div className="grid grid-cols-7 gap-1 text-center text-xs">
+                    {/* Padding cells */}
+                    {Array.from({ length: firstDayIndex }).map((_, i) => (
+                      <span key={`pad-${i}`}></span>
+                    ))}
+
+                    {/* Active Month Days */}
+                    {Array.from({ length: daysInMonth }).map((_, i) => {
+                      const dayNum = i + 1;
+                      const dateObj = new Date(currentYear, currentMonth, dayNum);
+                      
+                      const isToday = new Date().toDateString() === dateObj.toDateString();
+                      const isSelected = (activePicker === 'in' ? checkInDate : checkOutDate).toDateString() === dateObj.toDateString();
+                      
+                      let isDisabled = false;
+                      // Disable past dates for check-in
+                      if (activePicker === 'in' && dateObj < new Date(new Date().setHours(0,0,0,0))) {
+                        isDisabled = true;
+                      }
+                      // Disable dates prior to check-in for check-out
+                      if (activePicker === 'out' && dateObj <= checkInDate) {
+                        isDisabled = true;
+                      }
+
+                      return (
+                        <button
+                          type="button"
+                          key={dayNum}
+                          disabled={isDisabled}
+                          onClick={() => handleDateSelect(dayNum)}
+                          className={`py-1.5 rounded-lg text-[11px] font-semibold transition-all ${
+                            isSelected ? 'bg-indigo-600 text-white font-bold' :
+                            isToday ? 'border border-indigo-500/40 text-indigo-400' :
+                            isDisabled ? 'text-slate-700 cursor-not-allowed' :
+                            'text-slate-300 hover:bg-slate-900'
+                          }`}
+                        >
+                          {dayNum}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
             </div>
 
@@ -548,7 +650,6 @@ export default function Home() {
                 const isActive = step.status === 'active';
                 const isSuccess = step.status === 'success';
                 const isFailed = step.status === 'failed';
-                const isPending = step.status === 'pending';
 
                 return (
                   <div key={idx} className="flex flex-col items-center text-center space-y-3 relative z-10 group">
