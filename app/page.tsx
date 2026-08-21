@@ -26,6 +26,8 @@ export default function Home() {
   const [citySearch, setCitySearch] = useState('');
   const [showCityDropdown, setShowCityDropdown] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const checkInRef = useRef<HTMLInputElement>(null);
+  const checkOutRef = useRef<HTMLInputElement>(null);
 
   // Date selection states
   const [checkIn, setCheckIn] = useState(() => {
@@ -334,39 +336,47 @@ export default function Home() {
               </div>
 
               {/* Polished Check-In Calendar Input */}
-              <div className="space-y-2 relative">
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <div 
+                className="space-y-2 relative cursor-pointer group"
+                onClick={() => !loading && checkInRef.current?.showPicker()}
+              >
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 pointer-events-none">
                   <Calendar className="w-3.5 h-3.5 text-indigo-500" /> Check-in
                 </label>
                 <div className="relative">
                   <input
                     type="date"
+                    ref={checkInRef}
                     value={checkIn}
                     onChange={(e) => setCheckIn(e.target.value)}
                     disabled={loading}
-                    className="w-full bg-slate-950/80 border border-slate-800 hover:border-slate-700 text-white rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-indigo-500 transition-all font-semibold"
+                    className="w-full bg-slate-950/80 border border-slate-800 group-hover:border-slate-700 text-white rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-indigo-500 transition-all font-semibold cursor-pointer"
                   />
-                  <div className="absolute right-3 top-3.5 pointer-events-none text-xs text-indigo-400 font-bold bg-slate-900 px-2 py-0.5 rounded">
-                    {formatDateDisplay(checkIn)}
+                  <div className="absolute right-3 top-3.5 pointer-events-none text-xs text-indigo-400 font-bold bg-slate-900 px-2 py-0.5 rounded flex items-center gap-1.5 border border-slate-800">
+                    <Calendar className="w-3 h-3 text-indigo-400" /> {formatDateDisplay(checkIn)}
                   </div>
                 </div>
               </div>
 
               {/* Polished Check-Out Calendar Input */}
-              <div className="space-y-2 relative">
-                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5">
+              <div 
+                className="space-y-2 relative cursor-pointer group"
+                onClick={() => !loading && checkOutRef.current?.showPicker()}
+              >
+                <label className="text-xs font-semibold text-slate-400 uppercase tracking-wider flex items-center gap-1.5 pointer-events-none">
                   <Calendar className="w-3.5 h-3.5 text-indigo-500" /> Check-out
                 </label>
                 <div className="relative">
                   <input
                     type="date"
+                    ref={checkOutRef}
                     value={checkOut}
                     onChange={(e) => setCheckOut(e.target.value)}
                     disabled={loading}
-                    className="w-full bg-slate-950/80 border border-slate-800 hover:border-slate-700 text-white rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-indigo-500 transition-all font-semibold"
+                    className="w-full bg-slate-950/80 border border-slate-800 group-hover:border-slate-700 text-white rounded-xl px-4 py-3.5 text-sm focus:outline-none focus:border-indigo-500 transition-all font-semibold cursor-pointer"
                   />
-                  <div className="absolute right-3 top-3.5 pointer-events-none text-xs text-indigo-400 font-bold bg-slate-900 px-2 py-0.5 rounded">
-                    {formatDateDisplay(checkOut)}
+                  <div className="absolute right-3 top-3.5 pointer-events-none text-xs text-indigo-400 font-bold bg-slate-900 px-2 py-0.5 rounded flex items-center gap-1.5 border border-slate-800">
+                    <Calendar className="w-3 h-3 text-indigo-400" /> {formatDateDisplay(checkOut)}
                   </div>
                 </div>
               </div>
