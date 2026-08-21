@@ -56,6 +56,12 @@ export default function Home() {
   const [errorB, setErrorB] = useState(false);
   const [emptyB, setEmptyB] = useState(false);
 
+  // Snapshot of simulation controls used for current search
+  const [activeSearchConfig, setActiveSearchConfig] = useState<{
+    delayA: number; errorA: boolean; emptyA: boolean;
+    delayB: number; errorB: boolean; emptyB: boolean;
+  } | null>(null);
+
   // Execution states
   const [loading, setLoading] = useState(false);
   const [currentWorkflowId, setCurrentWorkflowId] = useState<string | null>(null);
@@ -92,6 +98,9 @@ export default function Home() {
     setAllResults(null);
     setErrorMsg(null);
     setActiveStep(0);
+
+    // Save active search config to render detailed error/timeout cards
+    setActiveSearchConfig({ delayA, errorA, emptyA, delayB, errorB, emptyB });
 
     const wId = `search-${selectedCity.name.toLowerCase()}-${Math.random().toString(36).substr(2, 9)}`;
     setCurrentWorkflowId(wId);
@@ -300,6 +309,13 @@ export default function Home() {
       <div className="absolute top-[10%] left-[10%] w-[400px] h-[400px] rounded-full bg-indigo-400/20 blur-[100px] pointer-events-none animate-float-1"></div>
       <div className="absolute bottom-[15%] right-[10%] w-[450px] h-[450px] rounded-full bg-violet-400/20 blur-[120px] pointer-events-none animate-float-2"></div>
 
+      {/* Floating Particle Stars/Dots for high fidelity */}
+      <div className="absolute top-[25%] left-[20%] w-2 h-2 rounded-full bg-indigo-500/30 blur-[0.5px] pointer-events-none animate-float-1"></div>
+      <div className="absolute top-[70%] left-[80%] w-3 h-3 rounded-full bg-violet-500/30 blur-[0.5px] pointer-events-none animate-float-2"></div>
+      <div className="absolute top-[50%] left-[8%] w-1.5 h-1.5 rounded-full bg-indigo-500/40 pointer-events-none animate-pulse-subtle"></div>
+      <div className="absolute top-[80%] left-[32%] w-2 h-2 rounded-full bg-violet-500/40 pointer-events-none animate-float-1"></div>
+      <div className="absolute top-[15%] left-[75%] w-2.5 h-2.5 rounded-full bg-indigo-500/35 blur-[0.5px] pointer-events-none animate-float-2"></div>
+
       <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 space-y-8 relative z-10">
         
         {/* Navigation / Header */}
@@ -335,7 +351,7 @@ export default function Home() {
         </div>
 
         {/* Form Card */}
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-xl shadow-slate-100 space-y-5">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-5 sm:p-6 shadow-xl shadow-slate-150 space-y-5">
           <form onSubmit={handleSearch} className="space-y-5">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5 relative" ref={calendarRef}>
               
@@ -712,9 +728,16 @@ export default function Home() {
                       </div>
                     </div>
                   ) : (
-                    <div className="py-2 flex flex-col items-center justify-center text-center text-slate-400 gap-1">
-                      <AlertCircle className="w-4 h-4 text-rose-500" />
-                      <span className="text-[11px]">No rate received</span>
+                    <div className="py-2 flex flex-col items-center justify-center text-center bg-rose-50/20 border border-rose-100 rounded-xl p-3 text-slate-500 gap-1.5">
+                      <AlertTriangle className="w-4 h-4 text-rose-500" />
+                      <div className="text-left">
+                        <span className="text-[11px] font-bold block text-rose-600">No Rate Received</span>
+                        <span className="text-[9px] text-slate-400">
+                          {activeSearchConfig?.errorA ? 'Simulated 500 Server Error' : 
+                           activeSearchConfig?.emptyA ? 'Returned Empty List' : 
+                           activeSearchConfig?.delayA && activeSearchConfig.delayA > 5000 ? 'Exceeded 5s Activity Timeout' : 'Unavailable'}
+                        </span>
+                      </div>
                     </div>
                   )}
                 </div>
@@ -741,9 +764,16 @@ export default function Home() {
                       </div>
                     </div>
                   ) : (
-                    <div className="py-2 flex flex-col items-center justify-center text-center text-slate-400 gap-1">
-                      <AlertCircle className="w-4 h-4 text-rose-500" />
-                      <span className="text-[11px]">No rate received</span>
+                    <div className="py-2 flex flex-col items-center justify-center text-center bg-rose-50/20 border border-rose-100 rounded-xl p-3 text-slate-500 gap-1.5">
+                      <AlertTriangle className="w-4 h-4 text-rose-500" />
+                      <div className="text-left">
+                        <span className="text-[11px] font-bold block text-rose-600">No Rate Received</span>
+                        <span className="text-[9px] text-slate-400">
+                          {activeSearchConfig?.errorB ? 'Simulated 500 Server Error' : 
+                           activeSearchConfig?.emptyB ? 'Returned Empty List' : 
+                           activeSearchConfig?.delayB && activeSearchConfig.delayB > 5000 ? 'Exceeded 5s Activity Timeout' : 'Unavailable'}
+                        </span>
+                      </div>
                     </div>
                   )}
                 </div>
