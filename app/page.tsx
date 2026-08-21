@@ -294,11 +294,11 @@ export default function Home() {
   const firstDayIndex = getFirstDayOfMonth(currentMonth, currentYear);
 
   return (
-    <div className="flex-1 flex flex-col justify-start min-h-screen bg-slate-50 text-slate-800 relative overflow-hidden font-sans">
+    <div className="flex-1 flex flex-col justify-start min-h-screen bg-[#f1f3f9] text-slate-800 relative overflow-hidden font-sans">
       
-      {/* Background soft color blur blobs */}
-      <div className="absolute top-[-5%] left-[-5%] w-[40%] h-[40%] rounded-full bg-indigo-500/5 blur-[100px] pointer-events-none"></div>
-      <div className="absolute bottom-[-5%] right-[-5%] w-[40%] h-[40%] rounded-full bg-violet-600/5 blur-[100px] pointer-events-none"></div>
+      {/* Background slowly floating blur blobs */}
+      <div className="absolute top-[10%] left-[10%] w-[400px] h-[400px] rounded-full bg-indigo-400/20 blur-[100px] pointer-events-none animate-float-1"></div>
+      <div className="absolute bottom-[15%] right-[10%] w-[450px] h-[450px] rounded-full bg-violet-400/20 blur-[120px] pointer-events-none animate-float-2"></div>
 
       <div className="max-w-4xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 space-y-8 relative z-10">
         
